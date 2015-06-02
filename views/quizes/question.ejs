@@ -1,16 +1,5 @@
-<!DOCTYPE HTML>
-<html lang="es">
-<head>
-	<meta charset="utf-8" />
-	<title>miQuiz</title>
-	<link rel="stylesheet" href="/stylesheet/style.css" />
-</head>
-<body>
-	<h2>miQuiz: el juego de las preguntas</h2>
-	<form action="/quizes/answer" method="get">
-	  <p>Pregunta: <%= pregunta %></p>
-	  <input type="text" name="respuesta" value="Responda aquí" />
-	  <input type="submit" value="Enviar" />
-	</form>
-</body>
-</html>
+<form action="/quizes/answer" method="get">
+  <p>Pregunta: <%= pregunta %></p>
+  <input type="text" name="respuesta" value="Respuesta" />
+  <input type="submit" value="Enviar" />
+</form>
