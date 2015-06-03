@@ -12,4 +12,9 @@ router.get('/', function(req, res, next) {
 router.get('/quizes/question',quizController.question);
 router.get('/quizes/answer',quizController.answer);
 
+// Enlace a la página que muestra los créditos
+router.get('/author',function(req,res){
+	res.render('author',{nombre:'Mario Gayo',foto:'images/mgayo.png'});
+});
+
 module.exports = router;
