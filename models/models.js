@@ -2,7 +2,7 @@ var path = require('path');
 
 // Postgres DATABASE_URL = postgres://user:passw@host:port/database
 // SQLite DATABASE_URL = sqlite://:@:/
-var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\/(.*)/);
+var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
 var DB_name  = (url[6]||null);
 var user     = (url[2]||null);
 var pwd      = (url[3]||null);
@@ -17,7 +17,7 @@ var Sequelize = require('sequelize');
 
 // Usar BD SQLite oo Postgres
 var sequelize = new Sequelize(DB_name,user,pwd,
-	{ dialect:protocol,
+	{ dialect:protocol,  // dialec y protocol son lo mismo por lo que se podría poner dialect:dialect
 	  protocol:protocol,
 	  port:port,
 	  host:host,
