@@ -15,9 +15,10 @@ var storage  = process.env.DATABASE_STORAGE;
 // Cargar Model ORM
 var Sequelize = require('sequelize');
 
-// Usar BD SQLite oo Postgres
+// Usar BD SQLite o Postgres (comentar el que no corresponda)
+// Este primer bloque es para postgres
 var sequelize = new Sequelize(DB_name,user,pwd,
-	{ dialect:protocol,  // dialec y protocol son lo mismo por lo que se podría poner dialect:dialect
+	{ dialect:protocol,  // dialect y protocol son lo mismo por lo que se podría poner dialect:dialect
 	  protocol:protocol,
 	  port:port,
 	  host:host,
@@ -27,11 +28,11 @@ var sequelize = new Sequelize(DB_name,user,pwd,
 );
 
 // Usar BD SQLite
-var sequelize = new Sequelize(null,null,null,
+/* var sequelize = new Sequelize(null,null,null,
 						{dialect:"sqlite",storage:"quiz.sqlite"}
-					);
+					); */
 
-// Importar la definición de la tabla Quiz en qui.js
+// Importar la definición de la tabla Quiz en quiz.js
 var Quiz = sequelize.import(path.join(__dirname,'quiz'));
 
 exports.Quiz = Quiz; // Exportar definición de tabla Quiz
