@@ -1,19 +1,28 @@
 var models = require('../models/models.js');
 
-// GET /quizes/question
-exports.question = function(req,res){
-	models.Quiz.findAll().then(function(quiz) {
-		res.render('quizes/question',{pregunta:quiz[0].pregunta})
+// GET /quizes   (Todo el listado de preguntas)
+exports.index = function(req,res){
+	models.Quiz.findAll().then(function(quizes) {
+		res.render('quizes/index',{quizes:quizes})
 	})
 };
 
-// GET /quizes/answer
+// GET /quizes/:id   (una pregunta concreta)
+exports.show = function(req,res){
+	models.Quiz.find(req.params.quizId).then(function(quiz) {
+		res.render('quizes/show',{quiz:quiz})
+	})
+};
+
+// GET /quizes/:id/answer   (Respuesta de una pregunta concreta)
 exports.answer = function(req,res){
-	models.Quiz.findAll().then(function(quiz){
-		if (req.query.respuesta===quiz[0].respuesta){
-			res.render('quizes/answer',{respuesta:'Correcta'});
+	models.Quiz.find(req.params.quizId).then(function(quiz){
+		if (req.query.respuesta===quiz.respuesta){
+			res.render('quizes/answer',
+				{quiz:quiz, respuesta:'Correcta'});
 		} else {
-			res.render('quizes/answer',{respuesta:'Incorrecta'});
+			res.render('quizes/answer',
+				{quiz:quiz, respuesta:'Incorrecta'});
 		}
 	})
 };
