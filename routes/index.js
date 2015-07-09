@@ -8,10 +8,13 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'miQuiz' });
 });
 
+// Autoload de comandos con :quizId
+router.param('quizId',quizController.load);
+
 // Enlazamos las rutas con el controlador que debe gestionarlas
 router.get('/quizes',quizController.index);
-router.get('/quizes/:quidId(\\d+)',quizController.show);
-router.get('/quizes/:quidId(\\d+)/answer',quizController.answer);
+router.get('/quizes/:quizId(\\d+)',quizController.show);
+router.get('/quizes/:quizId(\\d+)/answer',quizController.answer);
 
 // Enlace a la página que muestra los créditos
 router.get('/author',function(req,res){
