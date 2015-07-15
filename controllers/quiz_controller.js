@@ -14,7 +14,16 @@ exports.load = function(req,res,next,quizId){
 
 // GET /quizes   (Todo el listado de preguntas)
 exports.index = function(req,res){
-	models.Quiz.findAll().then(
+	var consulta={};
+	// Si hay parámetro de búsqueda armamos una consulta
+	// si no la consulta permanece vacía
+	if (req.query.search) {
+		var criterio=("%"+req.query.search.trim()+"%").replace(/\s/g,"%");
+		consulta={where: ["pregunta like ?", criterio],
+				  order: "pregunta ASC"};
+	};
+	// Se realiza la consulta. Si no había parámetro de búsqueda la var consulta está vacia
+	models.Quiz.findAll(consulta).then(
 		function(quizes) {
 			res.render('quizes/index',{quizes:quizes});
 		}
