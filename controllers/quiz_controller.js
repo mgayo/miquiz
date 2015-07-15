@@ -15,14 +15,14 @@ exports.load = function(req,res,next,quizId){
 // GET /quizes   (Todo el listado de preguntas)
 exports.index = function(req,res){
 	var consulta={};
-	// Si hay par·metro de b˙squeda armamos una consulta
-	// si no la consulta permanece vacÌa
+	// Si hay par√°metro de b√∫squeda armamos una consulta
+	// si no la consulta permanece vac√≠a
 	if (req.query.search) {
 		var criterio=("%"+req.query.search.trim()+"%").replace(/\s/g,"%");
 		consulta={where: ["pregunta like ?", criterio],
 				  order: "pregunta ASC"};
 	};
-	// Se realiza la consulta. Si no habÌa par·metro de b˙squeda la var consulta est· vacia
+	// Se realiza la consulta. Si no hab√≠a par√°metro de b√∫squeda la var consulta est√° vacia
 	models.Quiz.findAll(consulta).then(
 		function(quizes) {
 			res.render('quizes/index',{quizes:quizes,errors:[]});
@@ -67,3 +67,27 @@ exports.create = function(req,res){
 		}
 	)
 };
+
+// GET /quizes/:id/edit
+exports.edit = function(req,res){
+	var quiz = req.quiz;
+	res.render('quizes/edit',{quiz:quiz,errors:[]});
+};
+
+//PUT /quizes/:id
+exports.update=function(req,res){
+	req.quiz.pregunta = req.body.quiz.pregunta;
+	req.quiz.respuesta = req.body.quiz.respuesta;
+	req.quiz.validate()
+	.then(
+		function(err){
+			if (err) {
+				res.render('/quizes/edit',{quiz:req.quiz,errors:err.errors});
+			} else {
+				req.quiz
+				.save({fields:["pregunta","respuesta"]})
+				.then(function(){res.redirect('/quizes');});
+			}
+		}
+	);
+}
