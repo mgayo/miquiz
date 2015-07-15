@@ -5,7 +5,7 @@ var quizController = require('../controllers/quiz_controller');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'miQuiz' });
+  res.render('index', { title: 'miQuiz',errors:[]});
 });
 
 // Autoload de comandos con :quizId
@@ -20,7 +20,7 @@ router.post('/quizes/create',quizController.create);
 
 // Enlace a la página que muestra los créditos
 router.get('/author',function(req,res){
-	res.render('author',{nombre:'Mario Gayo',foto:'images/mgayo.png'});
+	res.render('author',{nombre:'Mario Gayo',foto:'images/mgayo.png',errors:[]});
 });
 
 module.exports = router;
