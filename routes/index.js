@@ -3,6 +3,7 @@ var router = express.Router();
 // Importamos el controlador básico
 var quizController = require('../controllers/quiz_controller');
 var commentController = require('../controllers/comment_controller');
+var sessionController = require('../controllers/session_controller');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -11,6 +12,11 @@ router.get('/', function(req, res, next) {
 
 // Autoload de comandos con :quizId
 router.param('quizId',quizController.load);
+
+// Definición de las rutas de sesión
+router.get('/login',sessionController.new);			// Formulario login
+router.post('/login',sessionController.create);		// Crear sesión
+router.get('/logout',sessionController.destroy);	// Destruir sesión (preferible con DELETE)
 
 // Enlazamos las rutas con el controlador que debe gestionarlas
 router.get('/quizes',quizController.index);
