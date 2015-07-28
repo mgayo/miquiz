@@ -103,3 +103,28 @@ exports.destroy = function(req,res){
 		res.redirect('/quizes');
 	}).catch(function(error){next(error)});
 };
+
+//GET /quizes/estadisticas
+exports.estadisticas = function(req,res){
+	models.Quiz.count().then(function (_npreg){
+		models.Comment.count().then(function (_ncoment){
+			var _promedio= _ncoment / _npreg;
+			models.Quiz.findAll({
+				include:[{model: models.Comment}]
+			}).then(function (quizes){
+				var _pregcon = 0;
+				for (i in quizes){
+					if (quizes[i].Comments.length)
+						_pregcon++;
+				}
+				var _pregsin = _npreg - _pregcon;
+				res.render('quizes/estadisticas', {npreg: _npreg,
+													ncoment: _ncoment,
+													promedio: _promedio,
+													pregcon: _pregcon,
+													pregsin: _pregsin,
+													errors: []});
+			})
+		})
+	});
+};
