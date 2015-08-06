@@ -28,6 +28,7 @@ router.post('/user',userController.create);			// Registrar nuevo usuario
 router.get('/user/:userId(\\d+)/edit',sessionController.loginRequired,userController.ownershipRequired,userController.edit);
 router.put('/user/:userId(\\d+)',sessionController.loginRequired,userController.ownershipRequired,userController.update);
 router.delete('/user/:userId(\\d+)',sessionController.loginRequired,userController.ownershipRequired,userController.destroy);
+router.get('/user/:userId(\\d+)/quizes',quizController.indexmias);
 
 // Enlazamos las rutas con el controlador que debe gestionarlas
 router.get('/quizes',quizController.index);

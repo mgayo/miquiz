@@ -47,6 +47,24 @@ exports.index = function(req,res){
 	).catch(function(error){next(error);});
 };
 
+//GET /quizesmias (Muestra solo las preguntas que ha creado el usuario logueado)
+// En el de los profes este indexmias está fusionado con el index anterior pero
+// como aquí se incluyen las búsquedas y en el de los profes no, pues no parecía
+// sencillo realizar una integración con todas las cosas.
+exports.indexmias = function (req,res){
+	var options = {};
+	if(req.user){
+		// req.user es creado por autoload de usuario
+		// si la ruta lleva el parámetro .quizId
+		options.where = {UserId:req.user.id}
+	}
+	models.Quiz.findAll(options).then(
+		function(quizes){
+			res.render('quizes/index.ejs',{quizes:quizes,errors:[]});
+		}
+	).catch(function(error){next(error)});
+};
+
 // GET /quizes/:id   (una pregunta concreta)
 exports.show = function(req,res){
 	res.render('quizes/show',{quiz:req.quiz,errors:[]});
