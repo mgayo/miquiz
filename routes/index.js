@@ -1,4 +1,5 @@
 var express = require('express');
+var multer = require('multer');
 var router = express.Router();
 // Importamos el controlador básico
 var quizController = require('../controllers/quiz_controller');
@@ -26,17 +27,22 @@ router.get('/user',userController.new);				// Formulario de registro
 router.post('/user',userController.create);			// Registrar nuevo usuario
 router.get('/user/:userId(\\d+)/edit',sessionController.loginRequired,userController.ownershipRequired,userController.edit);
 router.put('/user/:userId(\\d+)',sessionController.loginRequired,userController.ownershipRequired,userController.update);
-router.delete('/user/:userId(\\d+)',sessionController.loginRequired,userController.ownershipRequired,userController.destroy)
+router.delete('/user/:userId(\\d+)',sessionController.loginRequired,userController.ownershipRequired,userController.destroy);
 
 // Enlazamos las rutas con el controlador que debe gestionarlas
 router.get('/quizes',quizController.index);
 router.get('/quizes/:quizId(\\d+)',quizController.show);
 router.get('/quizes/:quizId(\\d+)/answer',quizController.answer);
 router.get('/quizes/new',sessionController.loginRequired,quizController.new);
-router.post('/quizes/create',sessionController.loginRequired,quizController.create);
+router.post('/quizes/create',sessionController.loginRequired,
+							multer({dest: './public/media/'}),
+							quizController.create);
 router.get('/quizes/:quizId(\\d+)/edit',sessionController.loginRequired,quizController.ownershipRequired,quizController.edit);
-router.put('/quizes/:quizId(\\d+)',sessionController.loginRequired,quizController.ownershipRequired,quizController.update);
-router.delete('/quizes/:quizId(\\d+)',sessionController.loginRequired,quizController.ownershipRequired,quizController.destroy)
+router.put('/quizes/:quizId(\\d+)',sessionController.loginRequired,
+									quizController.ownershipRequired,
+									multer({dest: './public/media/'}),
+									quizController.update);
+router.delete('/quizes/:quizId(\\d+)',sessionController.loginRequired,quizController.ownershipRequired,quizController.destroy);
 
 // Enlazamos las rutas que gestionan los comentarios
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);

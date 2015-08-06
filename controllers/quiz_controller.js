@@ -72,6 +72,9 @@ exports.new = function(req,res){
 // POST /quizes/create
 exports.create = function(req,res){
 	req.body.quiz.UserId=req.session.user.id;
+	if(req.files.image){
+		req.body.quiz.image = req.files.image.name;
+	}
 	var quiz = models.Quiz.build(req.body.quiz);
 	// Guarda en la BD los campos pregunta y respuesta de quiz
 	quiz.validate().then(
@@ -80,7 +83,7 @@ exports.create = function(req,res){
 				res.render('quizes/new',{quiz:quiz,errors:err.errors});
 			} else {
 				quiz
-				.save({fields:["pregunta","respuesta","tema","UserId"]})
+				.save({fields:["pregunta","respuesta","tema","UserId","image"]})
 				.then(function(){res.redirect('/quizes')})
 			}
 		}
@@ -95,6 +98,9 @@ exports.edit = function(req,res){
 
 //PUT /quizes/:id
 exports.update=function(req,res){
+	if(req.files.image){
+		req.quiz.image = req.files.image.name;
+	}
 	req.quiz.pregunta = req.body.quiz.pregunta;
 	req.quiz.respuesta = req.body.quiz.respuesta;
 	req.quiz.tema = req.body.quiz.tema;
@@ -105,7 +111,7 @@ exports.update=function(req,res){
 				res.render('/quizes/edit',{quiz:req.quiz,errors:err.errors});
 			} else {
 				req.quiz
-				.save({fields:["pregunta","respuesta","tema"]})
+				.save({fields:["pregunta","respuesta","tema","image"]}) //¿Aquí no está el UserId?
 				.then(function(){res.redirect('/quizes');});
 			}
 		}
